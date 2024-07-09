@@ -83,7 +83,7 @@ namespace SeaBattle_3
                     else if (CellMas[i, j].State == CellState.Miss)
                         Console.Write('-');
                     else
-                        Console.Write('.');
+                        Console.Write(' ');
                 }
                 Console.WriteLine();
             }
@@ -99,7 +99,7 @@ namespace SeaBattle_3
                     else if (CellMas[i, j].State == CellState.Miss)
                         Console.Write('-');
                     else
-                        Console.Write('.');
+                        Console.Write(' ');
                 }
                 Console.WriteLine();
             }
@@ -857,7 +857,6 @@ namespace SeaBattle_3
             {
                 obj.CellMas[ShotStartX, ShotStartY].State = CellState.Miss;
                 OnMiss("ПРОМАХ!");
-                Console.WriteLine("Вы промахнулись.");
                 Thread.Sleep(1000);
                 Console.Clear();
             }

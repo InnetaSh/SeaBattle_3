@@ -5,6 +5,18 @@ Board AIboard = new Board();
 Board Myboard = new Board();
 
 
+Notifications Notify = new Notifications();
+
+AIboard.Hit += Notify.DisplayAIMsg;
+AIboard.DefeatOfTheShip += Notify.DisplayAIMsg;
+AIboard.Miss += Notify.DisplayMyMsg;
+AIboard.Win += Notify.DisplayMyMsg;
+
+Myboard.Hit += Notify.DisplayMyMsg;
+Myboard.DefeatOfTheShip += Notify.DisplayAIMsg;
+Myboard.Miss += Notify.DisplayMyMsg;
+Myboard.Win += Notify.DisplayMyMsg;
+
 Myboard.MyGenerateShips();
 
 AIboard.AIGenerateShips();
@@ -34,26 +46,50 @@ void Game(Board AIboard, Board Myboard)
     Console.Clear();
     while (true)
     {
+
         AIboard.AIShot(Myboard);
-        bool flag = false;
-        for (var i = 0; i < Board.Size; i++)
+
+        if (!CheckBoard(Myboard))
         {
-            for (var j = 0; j < Board.Size; j++)
-            {
-                if (AIboard.CellMas[i, j].State == CellState.Ship)
-                {
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag)
-                break;
-        }
-        if (!flag)
-        {
-            Console.WriteLine("ИГРА ОКОНЧЕНА!");
+            AIboard.OnWin("ПОБЕДИЛ ИИ.");
             break;
         }
         Myboard.MyShot(AIboard);
+        if (!CheckBoard(AIboard))
+        {
+            Myboard.OnWin("ВЫ ПОБЕДИЛИ.");
+            break;
+        }
+    }
+}
+
+bool CheckBoard(Board board)
+{
+    bool flag = false;
+    for (var i = 0; i < Board.Size; i++)
+    {
+        for (var j = 0; j < Board.Size; j++)
+        {
+            if (board.CellMas[i, j].State == CellState.Ship)
+            {
+                flag = true;
+                break;
+            }
+        }
+        if (flag)
+            break;
+    }
+    return flag;
+}
+
+internal class Notifications
+{
+    public void DisplayAIMsg(string msg)
+    {
+        Console.WriteLine(msg);
+    }
+    public void DisplayMyMsg(string msg)
+    {
+        Console.WriteLine(msg);
     }
 }
